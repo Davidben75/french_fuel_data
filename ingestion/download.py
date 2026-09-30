@@ -11,13 +11,12 @@ logger = logging.getLogger(__name__)
 csv_filename = f"carburants_csv.{date.today()}.csv"
 
 
-def build_csv_file_path() -> Path:
-    RAW_DIR = Path('../data/raw')
-    RAW_DIR.mkdir(parents=True, exist_ok=True)
-    return RAW_DIR/csv_filename
+def build_csv_file_path(dir : Path) -> Path:
+    dir.mkdir(parents=True, exist_ok=True)
+    return dir/csv_filename
 
-def download_csv()-> Path:
-    csv_path = build_csv_file_path()
+def download_csv(dir : Path)-> Path:
+    csv_path = build_csv_file_path(dir)
     if  csv_path.exists():
         logger.info(f"File : {csv_filename} already exists...")
     
@@ -27,6 +26,6 @@ def download_csv()-> Path:
         csv_path.write_bytes(req.content)
     
         logger.info(f"CSV FILE : {csv_filename} download successfully {csv_path.stat().st_size / 1e6:.1f} Mo")
-        return csv_path
+    return csv_path
 
 
