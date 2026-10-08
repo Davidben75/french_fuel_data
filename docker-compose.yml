@@ -1,0 +1,17 @@
+services:
+    db_dev:
+        image: postgis/postgis:18-3.6-alpine
+        container_name: postgis_dev_db
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+            TZ: Europe/Paris
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgis_dev_data:/var/lib/postgresql
+            - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+
+volumes:
+    postgis_dev_data:

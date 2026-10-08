@@ -1,6 +1,11 @@
 # Data
 *.csv
 
+# ENV
+.env
+.env.dev
+.env.prod
+
 # OS
 .DS_Store
 
