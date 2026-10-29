@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, OnModuleDestroy } from '@nestjs/common';
 import { Pool } from 'pg';
+import { StationDto } from './stations.controller';
 
 export interface StationResult {
     id : number;
@@ -29,8 +30,14 @@ export class StationsService implements OnModuleDestroy{
         await this.pool.end()
     }
 
-    async nearbyStationsPrice(lat: number, lon: number, radiusM: number, fuel: string) {
+    async nearbyStationsPrice(stationDto : StationDto) {
+        if (!stationDto) {
+            throw new BadRequestException('Some field are required')
+        }
+
         const FUELS = ['gazole', 'sp95', 'e10', 'sp98', 'e85', 'gplc'];
+        const {lat, lon, radiusM, fuel} = stationDto
+
 
         if (!FUELS.includes(fuel)) {
         throw new BadRequestException('Carburant invalide');
