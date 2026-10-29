@@ -6,6 +6,9 @@
 .env.dev
 .env.prod
 
+# Yarn 
+.yarn
+
 # OS
 .DS_Store
 
