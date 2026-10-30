@@ -7,11 +7,17 @@ import {
   MapLocateControl,
   MapPopup,
 } from "@/components/ui/map"
-import { divIcon, type LatLngExpression } from "leaflet"
-import { Fuel, MapPin } from "lucide-react"
-import React, { useCallback, useEffect, useState } from "react"
-import { FuelRadiusSearch } from "@/components/fuel-radius-search"
+
+import {
+  FuelRadiusSearch,
+  type SearchValues,
+} from "@/components/fuel-radius-search"
+
+import { type LatLngExpression } from "leaflet"
+import { CircleAlert, Fuel, MapPin } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
 import axios from "axios"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 type Station = {
   id: number
@@ -36,7 +42,7 @@ const DEFAULT_POSITION: LatLngExpression = [48.856614, 2.3522219]
 export default function MyMap() {
   const [currentPosition, setCurrentPosition] =
     useState<LatLngExpression>(DEFAULT_POSITION)
-  const [filters, setFilters] = useState()
+  const [filters, setFilters] = useState<SearchValues | null>(null)
   const [stations, setStations] = useState<Station[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -56,7 +62,7 @@ export default function MyMap() {
   }, [])
 
   const fetchStations = useCallback(
-    async (values: any, position: LatLngExpression) => {
+    async (values: SearchValues, position: LatLngExpression) => {
       // LatLngExpression can be [lat, lng] or { lat, lng } — normalize
       const [lat, lon] = Array.isArray(position)
         ? position
@@ -102,14 +108,37 @@ export default function MyMap() {
   return (
     <>
       {/* SEARCH INPUT  */}
-      <div className="border-b bg-background p-4">
+      <div className="space-y-4 border-b bg-background p-4">
         <FuelRadiusSearch
-          isLoading={false}
+          isLoading={loading}
           onSearch={(values) => {
             setFilters(values)
-            // Trigger your map search / API call here
           }}
         />
+
+        {error && (
+          <Alert variant="destructive">
+            <CircleAlert />
+            <AlertTitle>Something went wrong</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {filters && !loading && !error && (
+          <Alert>
+            <Fuel />
+            <AlertTitle>
+              {stations.length === 0
+                ? "Aucune station trouvé"
+                : `${stations.length} station${stations.length > 1 ? "s" : ""} trouvée${stations.length > 1 ? "s" : ""}`}
+            </AlertTitle>
+            <AlertDescription>
+              {stations.length === 0
+                ? "Malheuresement nous avons rien trouvé. Elargissez votre rayon."
+                : `Dans un rayon ${filters.radiusM / 1000} km.`}
+            </AlertDescription>
+          </Alert>
+        )}
       </div>
 
       {/* MAP CONTENT */}

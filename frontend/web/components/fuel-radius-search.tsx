@@ -56,7 +56,7 @@ export function FuelRadiusSearch({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="fuel-type">Fuel type</Label>
+        <Label htmlFor="fuel-type">Carburants</Label>
 
         <Select
           value={fuelType}
@@ -77,7 +77,7 @@ export function FuelRadiusSearch({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="radius">Search radius</Label>
+        <Label htmlFor="radius">Rayon</Label>
 
         <InputGroup>
           <InputGroupAddon>
@@ -112,7 +112,7 @@ export function FuelRadiusSearch({
         ) : (
           <>
             <Search className="size-4" />
-            Find stations
+            Rechercher
           </>
         )}
       </Button>
