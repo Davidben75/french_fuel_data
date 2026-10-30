@@ -29,7 +29,12 @@ const FUEL_TYPES = [
   { value: "gplc", label: "GPLC" },
 ] as const
 
-type FuelType = (typeof FUEL_TYPES)[number]["value"]
+export type FuelType = (typeof FUEL_TYPES)[number]["value"]
+
+export type SearchValues = {
+  fuelType: FuelType
+  radiusM: number
+}
 
 export function FuelRadiusSearch({
   onSearch,
