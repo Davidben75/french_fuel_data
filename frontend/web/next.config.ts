@@ -1,5 +1,4 @@
 import { loadEnvConfig } from "@next/env"
-import { dir } from "console"
 import type { NextConfig } from "next"
 import path from "path"
 

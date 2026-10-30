@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "./globals.css"
 import { cn } from "@/lib/utils"
-import MyMap from "./map/page.tsx"
+import MyMap from "./map/page"
 import React from "react"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
