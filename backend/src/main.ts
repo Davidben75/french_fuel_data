@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    origin : '*'
+    origin : ['http://localhost:3001']
   })
 
   app.enableCsrfProtection()

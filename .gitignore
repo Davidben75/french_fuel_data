@@ -15,3 +15,5 @@
 # Python
 .venv
 */__pycache__
+
+*.dump
