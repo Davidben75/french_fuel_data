@@ -5,16 +5,16 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({transform: true}));
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   app.enableCors({
-    origin : ['http://localhost:3001'],
+    origin: ['http://localhost:3001', 'https://station-pas-cher.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-  })
+  });
 
-  app.enableCsrfProtection()
-  app.useSecurityHeaders()
+  app.enableCsrfProtection();
+  app.useSecurityHeaders();
   await app.listen(process.env.PORT ?? 3000);
 }
 
