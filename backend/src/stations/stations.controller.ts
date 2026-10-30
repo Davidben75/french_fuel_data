@@ -1,33 +1,42 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Query } from '@nestjs/common';
 import { StationsService } from './stations.service';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsString, Max, Min } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class StationDto {
-    @IsNumber()
-    @IsNotEmpty({message : "Lat option must be provided"})
-    lat: number;
+export class StationQueryDto {
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty({ message: 'Lat option must be provided' })
+  @Min(-90)
+  @Max(90)
+  lat: number;
 
-    @IsNumber()
-    @IsNotEmpty({message : "Long option must be provided"})
-    lon: number; 
+  @Type(() => Number)
+  @IsNumber()
+  @IsNotEmpty({ message: 'Long option must be provided' })
+  @Min(-180)
+  @Max(180)
+  lon: number;
 
-    @IsNumber()
-    @IsNotEmpty({message : "Radius option must be provided"})
-    //  Radius in meter : eg 1km = 1000M
-    // radiusM = 1000
-    radiusM: number;
+  @Type(() => Number)
+  @IsNumber()
+  @IsPositive()
+  @IsNotEmpty({ message: 'Radius option must be provided' })
+  // Radius in meters, e.g. 1km = 1000
+  radiusM: number;
 
-    @IsString()
-    @IsNotEmpty({message : "Fuel option must be provided"})
-    fuel: string;
+  @IsString()
+  @IsNotEmpty({ message: 'Fuel option must be provided' })
+  fuel: string;
 }
+
 
 @Controller('stations')
 export class StationsController {
     constructor (private readonly stationService : StationsService) {}
 
     @Get('/nearest')
-    getLowerFuelStationNearby(@Body() stationDto : StationDto) {
-        return this.stationService.nearbyStationsPrice(stationDto)
+    getLowerFuelStationNearby(@Query() query : StationQueryDto) {
+        return this.stationService.nearbyStationsPrice(query)
     }
 }
