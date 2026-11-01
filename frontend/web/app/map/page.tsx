@@ -148,6 +148,7 @@ export default function MyMap() {
             center={currentPosition}
             zoom={12}
             className="h-full w-full touch-pan-y"
+            attributionControl={true}
           >
             {stations &&
               stations.map((station, index) => (
