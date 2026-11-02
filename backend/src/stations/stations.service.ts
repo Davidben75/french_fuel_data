@@ -45,6 +45,7 @@ export class StationsService implements OnModuleDestroy {
       throw new BadRequestException('Carburant invalide');
     }
 
+    //  ORDER BY PRICE AND BY DISTANCE ASC
     const { rows } = await this.pool.query<StationResult>(
       `
         SELECT s.id, s.adresse, s.cp, s.ville,
@@ -61,7 +62,7 @@ export class StationsService implements OnModuleDestroy {
             ORDER BY updated_at DESC LIMIT 1
         ) lp
         WHERE ST_DWithin(s.location, p.pt, $4::float8)
-        ORDER BY lp.price ASC, distance_m ASC
+        ORDER BY distance_m ASC,  lp.price ASC
         LIMIT 15
         `,
       [lon, lat, fuel, radiusM],
