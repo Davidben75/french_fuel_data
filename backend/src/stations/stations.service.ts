@@ -62,7 +62,7 @@ export class StationsService implements OnModuleDestroy {
             ORDER BY updated_at DESC LIMIT 1
         ) lp
         WHERE ST_DWithin(s.location, p.pt, $4::float8)
-        ORDER BY distance_m ASC,  lp.price ASC
+        ORDER BY lp.price ASC, distance_m ASC
         LIMIT 15
         `,
       [lon, lat, fuel, radiusM],
